@@ -1,6 +1,8 @@
 # 🍽️ Vietnamese Restaurant Review Aspect-Based Sentiment Analysis
 
 ## 📌 Giới thiệu
+Bài báo và link github tham khảo của bài này : https://github.com/ds4v/absa-vlsp-2018
+
 Dự án này thực hiện **Aspect-Based Sentiment Analysis (ABSA)** trên **VLSP 2018 Restaurant Dataset** bằng tiếng Việt.  
 **Mục tiêu:** dự đoán **cảm xúc** (Positive, Negative, Neutral) cho từng **khía cạnh** (aspect) trong đánh giá của khách hàng về nhà hàng.
 
