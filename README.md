@@ -14,19 +14,17 @@ Dự án này thực hiện **Aspect-Based Sentiment Analysis (ABSA)** trên **V
 - **Dự đoán thử**: nhập câu tiếng Việt và trả kết quả phân tích.
 
 ## 📂 Cấu trúc thư mục
-├── preprocessing.py # Module tiền xử lý tiếng Việt
+├── Data_Preprocessing.ipynb # Module tiền xử lý tiếng Việt
 
-├── nlp_model.py # Định nghĩa & huấn luyện mô hình BiLSTM
+├── Model.ipynb # Định nghĩa & huấn luyện mô hình BiLSTM
 
 ├── data/
 
-│ ├── raw/ # Dataset gốc (train/dev/test)
+│ ├── final_nlp_processed_dev.csv
 
-│ ├── processed/ # Dataset đã tiền xử lý
+│ ├── final_nlp_processed_test.csv
 
-│ └── wiki.vi.model.bin/ # Mô hình Word2Vec tiếng Việt
-
-├── results/ # Lưu biểu đồ, báo cáo kết quả
+│ └── final_nlp_processed_train.csv
 
 └── README.md
 
