@@ -1,96 +1,78 @@
 # 🍽️ Vietnamese Restaurant Review Aspect-Based Sentiment Analysis
 
-## 📌 Giới thiệu
-Bài báo và link github tham khảo của bài này : https://github.com/ds4v/absa-vlsp-2018
+## 📌 Introduction
+Reference paper & GitHub repository: https://github.com/ds4v/absa-vlsp-2018
 
-Dự án này thực hiện **Aspect-Based Sentiment Analysis (ABSA)** trên **VLSP 2018 Restaurant Dataset** bằng tiếng Việt.  
-**Mục tiêu:** dự đoán **cảm xúc** (Positive, Negative, Neutral) cho từng **khía cạnh** (aspect) trong đánh giá của khách hàng về nhà hàng.
+This project implements **Aspect-Based Sentiment Analysis (ABSA)** on  **VLSP 2018 Restaurant Dataset** in Vietnamese.
+**Goal:** predict the sentiment polarity (Positive, Negative, Neutral) for each aspect mentioned in a customer review.
 
-### Các thành phần chính:
-- **Tiền xử lý dữ liệu tiếng Việt**: loại bỏ nhiễu, chuẩn hóa chính tả, xử lý teencode, tách từ.
-- **Word2Vec embeddings**: biểu diễn từ dựa trên mô hình `wiki.vi.model.bin`.
-- **BiLSTM đa nhiệm**: dự đoán đồng thời nhiều khía cạnh và cảm xúc.
-- **Đánh giá mô hình**: Accuracy, Precision, Recall, F1-score, Confusion Matrix.
-- **Dự đoán thử**: nhập câu tiếng Việt và trả kết quả phân tích.
+### Key Components
+- **Vietnamese text preprocessing**: noise removal, spelling correction, teencode normalization, word segmentation.
+- **Word2Vec embeddings**: using `wiki.vi.model.bin` pre-trained vectors.
+- **Multi-task BiLSTM model:**: simultaneously performs aspect detection & sentiment prediction.
+- **Model evaluation:**: Accuracy, Precision, Recall, F1-score, Confusion Matrix.
+- **Inference demo**: input a Vietnamese review and obtain aspect-based sentiment outputs.
 
 ## 📂 Cấu trúc thư mục
-├── Data_Preprocessing.ipynb # Module tiền xử lý tiếng Việt
-
-├── Model.ipynb # Định nghĩa & huấn luyện mô hình BiLSTM
-
-├── data/
-
+```
+├── Data_Preprocessing.ipynb # Vietnamese text preprocessing pipeline
+├── Model.ipynb              # BiLSTM model definition & training
+ data/
 │ ├── final_nlp_processed_dev.csv
-
 │ ├── final_nlp_processed_test.csv
-
 │ └── final_nlp_processed_train.csv
-
 └── README.md
-
-
----
+```
 
 ## 📊 Dữ liệu
-Sử dụng **VLSP 2018 SA - Restaurant Dataset** gồm 3 file:
+We use the **VLSP 2018 SA – Restaurant Dataset**, including:
 - `1-VLSP2018-SA-Restaurant-train.csv`
 - `2-VLSP2018-SA-Restaurant-dev.csv`
 - `3-VLSP2018-SA-Restaurant-test.csv`
 
 **Cấu trúc dữ liệu:**
-- **Review**: câu đánh giá của khách.
-- **Các cột aspect**: giá trị `0` (Not Mentioned), `1` (Positive), `2` (Negative), `3` (Neutral).
+- **Review**: customer review text.
+- **Aspect columns:**: each aspect is labeled with
+  - `0` (Not Mentioned),
+  - `1` (Positive),
+  - `2` (Negative),
+  - `3` (Neutral).
+---
+
+## 🛠️ Preprocessing Pipeline
+The preprocessing module applies:
+1. Remove HTML tags, emojis, URLs, emails, phone numbers, hashtags.
+2. Normalize Vietnamese Unicode.
+3. Normalize tone marks using VinAI rules or **Behitek algorithm**.
+4. Replace teencode and domain-specific abbreviations.
+5. Correct spelling using [`bmd1905/vietnamese-correction-v2`](https://huggingface.co/bmd1905/vietnamese-correction-v2).
+6. Perform word segmentation with **VnCoreNLP**.
+7. Export cleaned datasets to CSV including both raw and processed text..
+---
+
+## 🧠 Model Architecture
+- **Embedding Layer**: initialized with pre-trained Word2Vec vectors.
+- **BiLSTM**: for contextual feature extraction.
+- **Linear Layer**: for multi-aspect sentiment prediction.
+- **Masked Loss Function**: to ignore non-mentioned aspects (`label=0`).
 
 ---
 
-## 🛠️ Tiền xử lý
-Pipeline tiền xử lý gồm:
-1. Xóa HTML, emoji, URL, email, số điện thoại, hashtag.
-2. Chuẩn hóa unicode tiếng Việt.
-3. Chuẩn hóa dấu theo **VinAI** hoặc thuật toán **Behitek**.
-4. Thay thế **teencode** & từ viết tắt đặc thù domain nhà hàng.
-5. Sửa lỗi chính tả bằng mô hình [`bmd1905/vietnamese-correction-v2`](https://huggingface.co/bmd1905/vietnamese-correction-v2).
-6. Tách từ bằng **VnCoreNLP**.
-7. Xuất CSV chứa câu gốc và câu đã xử lý.
+## 📈 Evaluation
+- **Aspect Detection**: Determine whether an aspect is mentioned in the review.
+- **Sentiment Classification**: Predict sentiment for mentioned aspects.
 
----
-
-## 🧠 Mô hình
-- **Embedding Layer**: khởi tạo từ Word2Vec.
-- **BiLSTM**: trích xuất ngữ cảnh hai chiều.
-- **Linear Layer**: dự đoán toàn bộ các khía cạnh cùng lúc.
-- **Masked Loss Function**: bỏ qua khía cạnh không được đề cập (`label=0`).
-
----
-
-## 📈 Đánh giá
-- **Aspect Detection**: nhận diện khía cạnh được đề cập.
-- **Sentiment Classification**: phân loại cảm xúc cho khía cạnh đó.
-
-**Metric sử dụng**:
+**Metric**:
 - Accuracy
 - Precision / Recall / F1-score (macro, weighted)
 - Confusion Matrix
 
 ---
 
-## 🚀 Cách chạy
+## 🚀 Usage
 
-### Cài đặt môi trường
+### Install Dependencies
 ```
 pip install underthesea gensim torchinfo seaborn scipy
 pip install vncorenlp emoji transformers
 ```
-### Data Preprocessing
-```
-python preprocessing.py
-```
-### Running Model
-```
-python nlp_model.py
-```
-### Test 
-```
-from nlp_model import predict_sentiment
-text = "Món ăn ngon nhưng phục vụ chậm."
-print(predict_sentiment(text))
