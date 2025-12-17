@@ -13,7 +13,7 @@ This project implements **Aspect-Based Sentiment Analysis (ABSA)** on  **VLSP 20
 - **Model evaluation:**: Accuracy, Precision, Recall, F1-score, Confusion Matrix.
 - **Inference demo**: input a Vietnamese review and obtain aspect-based sentiment outputs.
 
-## 📂 Cấu trúc thư mục
+## 📂 Directory Structure
 ```
 ├── Data_Preprocessing.ipynb # Vietnamese text preprocessing pipeline
 ├── Model.ipynb              # BiLSTM model definition & training
@@ -24,13 +24,13 @@ This project implements **Aspect-Based Sentiment Analysis (ABSA)** on  **VLSP 20
 └── README.md
 ```
 
-## 📊 Dữ liệu
+## 📊 Data
 We use the **VLSP 2018 SA – Restaurant Dataset**, including:
 - `1-VLSP2018-SA-Restaurant-train.csv`
 - `2-VLSP2018-SA-Restaurant-dev.csv`
 - `3-VLSP2018-SA-Restaurant-test.csv`
 
-**Cấu trúc dữ liệu:**
+**Data Structure:**
 - **Review**: customer review text.
 - **Aspect columns:**: each aspect is labeled with
   - `0` (Not Mentioned),
@@ -47,7 +47,7 @@ The preprocessing module applies:
 4. Replace teencode and domain-specific abbreviations.
 5. Correct spelling using [`bmd1905/vietnamese-correction-v2`](https://huggingface.co/bmd1905/vietnamese-correction-v2).
 6. Perform word segmentation with **VnCoreNLP**.
-7. Export cleaned datasets to CSV including both raw and processed text..
+7. Export cleaned datasets to CSV, including both raw and processed text.
 ---
 
 ## 🧠 Model Architecture
